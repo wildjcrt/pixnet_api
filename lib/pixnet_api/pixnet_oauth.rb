@@ -1,6 +1,7 @@
 module PixnetApi
   class PixnetOauth
     attr_accessor :consumer, :access_token
+    include PixnetApi::Album
 
     def initialize
       @consumer = OAuth::Consumer.new(
@@ -15,25 +16,6 @@ module PixnetApi
       )
       @data_sets = {}
       @check_sets = {}
-    end
-
-    def check_album_set(set_id)
-      return @check_sets[set_id] if @check_sets[set_id].present?
-      
-      ret_json = JSON.parse(@access_token.get("/album/sets/#{set_id}").body)
-      
-      if 0 == ret_json["error"]
-        @data_sets[set_id] = ret_json
-        @check_sets[set_id] = true
-        return true
-      else
-        @check_sets[set_id] = false
-        return false
-      end
-    end
-
-    def get_album_element(element_id)
-      return JSON.parse(@access_token.get("/album/elements/#{element_id}").body)
     end
 
     def upload_pic(set_id, filename)
