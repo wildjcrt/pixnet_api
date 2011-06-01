@@ -3,20 +3,25 @@ module PixnetApi
     attr_accessor :consumer, :access_token
 
     def initialize
-      credentials = PIXNET_CONSUMER_CREDENTIALS
-      @consumer = OAuth::Consumer.new(credentials[:key],
-                                      credentials[:secret],
-                                      credentials[:options])
-      @access_token = OAuth::AccessToken.new(@consumer,
-                                             PIXNET_ACCESSTOKEN[:oauth_token],
-                                             PIXNET_ACCESSTOKEN[:oauth_token_secret])
+      @consumer = OAuth::Consumer.new(
+        PIXNET_CONSUMER_CREDENTIALS[:key],
+        PIXNET_CONSUMER_CREDENTIALS[:secret],
+        PIXNET_CONSUMER_CREDENTIALS[:options]
+      )
+      @access_token = OAuth::AccessToken.new(
+        @consumer,
+        PIXNET_ACCESSTOKEN[:oauth_token],
+        PIXNET_ACCESSTOKEN[:oauth_token_secret]
+      )
       @data_sets = {}
       @check_sets = {}
     end
 
     def check_album_set(set_id)
       return @check_sets[set_id] if @check_sets[set_id].present?
+      
       ret_json = JSON.parse(@access_token.get("/album/sets/#{set_id}").body)
+      
       if 0 == ret_json["error"]
         @data_sets[set_id] = ret_json
         @check_sets[set_id] = true
@@ -33,12 +38,14 @@ module PixnetApi
 
     def upload_pic(set_id, filename)
       return false unless check_album_set(set_id)
+      
       url = URI.parse("http://emma.pixnet.cc/album/elements")
       file = File.new(filename)
       mime_type = `/usr/bin/file -bi #{file.path}`.strip.split(';')[0]
-      req = Net::HTTP::Post::Multipart.new "/album/elements?set_id=#{set_id}", {
+      req = Net::HTTP::Post::Multipart.new("/album/elements?set_id=#{set_id}", {
         "upload_file" => UploadIO.new(file, mime_type, file.path),
-      }
+      })
+      
       @access_token.sign!(req)
       Net::HTTP.new(url.host, url.port).start do |http|
         res = http.request(req)
@@ -48,17 +55,23 @@ module PixnetApi
 
     def upload_pic_by_url(set_id, pic_url)
       return false unless check_album_set(set_id)
+      
       require 'open-uri'
+      
       url = URI.parse("http://emma.pixnet.cc/album/elements")
+      
       begin
         io = open(pic_url)
       rescue
         return false
       end
-      return false unless io.meta['content-length'].to_i > 0 && io.meta['content-type'].match(/^image/)
-      req = Net::HTTP::Post::Multipart.new "/album/elements?set_id=#{set_id}", {
+      
+      return false unless (io.meta['content-length'].to_i > 0) && io.meta['content-type'].match(/^image/)
+      
+      req = Net::HTTP::Post::Multipart.new("/album/elements?set_id=#{set_id}", {
         "upload_file" => UploadIO.new(io, io.meta['content-type']),
-      }
+      })
+      
       @access_token.sign!(req)
       Net::HTTP.new(url.host, url.port).start do |http|
         res = http.request(req)
