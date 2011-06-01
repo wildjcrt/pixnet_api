@@ -1,0 +1,11 @@
+#!/usr/bin/env ruby
+require "rubygems"
+require "bundler"
+
+Bundler.setup
+
+require "irb"
+
+require "lib/pixnet_api"
+
+IRB.start
