@@ -26,5 +26,20 @@ General configuration options
 
  3. Fill-up config/initializers/oauth_pixnet.rb your key and token from step 2.
 
+Usage
+--
+First, You need to create a variable for any method you want to call.
+
+> @pixnet_oauth = PixnetApi::PixnetOauth.new
+
+Then you can call method like:
+
+> @pixnet_oauth.get_album_sets
+
+OR
+
+> @pixnet_oauth.get_album_element your_element_id
+
+Enjoy!
 
   [1]: http://apps.pixnet.tw/
