@@ -15,6 +15,16 @@ Then bundle:
 
 > % bundle
 
+OR if you want to install plugin, your project need some gems:
+
+> gem "oauth"
+> gem "json"
+> gem "multipart-post"
+
+To install plugin, you can
+
+> $ rails plugin install git@github.com:wildjcrt/pixnet_api.git
+
 General configuration options
 --
 
