@@ -9,28 +9,28 @@ Install
 --
 Put this line in your Gemfile:
 
-> gem "pixnet_api"
+    gem "pixnet_api"
 
 Then bundle:
 
-> % bundle
+    % bundle
 
 OR if you want to install plugin, your project need some gems:
 
-> gem "oauth"
-> gem "json"
-> gem "multipart-post"
-
+    gem "oauth"
+    gem "json"
+    gem "multipart-post"
+    
 To install plugin, you can
 
-> $ rails plugin install git@github.com:wildjcrt/pixnet_api.git
+    $ rails plugin install git@github.com:wildjcrt/pixnet_api.git
 
 General configuration options
 --
 
  First, Run the following generator command, then edit the generated file.
 
-> % rails g pixnet_api:install
+    % rails g pixnet_api:install
 
  Go to [PIXNET API developers][1] to register your app.
 
@@ -40,15 +40,15 @@ Usage
 --
 First, You need to create a variable for any method you want to call.
 
-> @pixnet_oauth = PixnetApi::PixnetOauth.new
+    @pixnet_oauth = PixnetApi::PixnetOauth.new
 
 Then you can call method like:
 
-> @pixnet_oauth.get_album_sets
+    @pixnet_oauth.get_album_sets
 
 OR
 
-> @pixnet_oauth.get_album_element your_element_id
+    @pixnet_oauth.get_album_element your_element_id
 
 Enjoy!
 
