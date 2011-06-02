@@ -18,13 +18,13 @@ Then bundle:
 General configuration options
 --
 
- 1. Run the following generator command, then edit the generated file.
+ First, Run the following generator command, then edit the generated file.
 
-> % rails g pixnet_api:insta
+> % rails g pixnet_api:install
 
- 2. Go to [PIXNET API developers][1] to register your app.
+ Go to [PIXNET API developers][1] to register your app.
 
- 3. Fill-up config/initializers/oauth_pixnet.rb your key and token from step 2.
+ Finally, open config/initializers/oauth_pixnet.rb, and fill-up CONSUMER_KEY and ACCESS_TOKEN.
 
 Usage
 --
